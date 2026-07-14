@@ -19,7 +19,7 @@
 
 ## 🌟 **Live Demo**
 
-<a href="https://yoga-diet-manasi.netlify.app" target="_blank">
+<a href="https://yoga-diet-management-system.netlify.app/" target="_blank">
   <img src="https://img.shields.io/badge/🚀_View_Live_Demo-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo">
 </a>
 
