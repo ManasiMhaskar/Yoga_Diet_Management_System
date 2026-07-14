@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧘 Yoga Diet with Manasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ===== AI POPUP ===== -->
+    <div class="ai-popup" id="aiPopup">
+        <div class="ai-popup-content">
+            <button class="ai-popup-close" onclick="closeAIPopup()">✕</button>
+            <div class="ai-badge-inline">
+                <i class="fas fa-circle"></i> AI-Powered
+            </div>
+            <h2>🤖 AI-Powered Wellness</h2>
+            <p>Our artificial intelligence system creates personalized wellness plans using advanced algorithms:</p>
+            <ul>
+                <li><i class="fas fa-brain"></i> Analyzes your health data</li>
+                <li><i class="fas fa-heartbeat"></i> Calculates BMI & calorie needs</li>
+                <li><i class="fas fa-yoga"></i> Generates custom yoga routines</li>
+                <li><i class="fas fa-utensils"></i> Creates personalized diet plans</li>
+                <li><i class="fas fa-chart-line"></i> Tracks your progress over time</li>
+                <li><i class="fas fa-robot"></i> Adapts recommendations as you improve</li>
+            </ul>
+            <button class="btn-primary" onclick="closeAIPopup()" style="width:100%;justify-content:center;margin-top:1rem;">
+                <i class="fas fa-check"></i> Got it!
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== BACKGROUND ===== -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    <div class="particles" id="particles"></div>
+
+    <!-- ===== AUTH MODAL ===== -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-content">
+            <button class="auth-close" onclick="closeAuth()">✕</button>
+            <div id="loginForm">
+                <h2>Welcome Back</h2>
+                <p>Sign in to track your wellness journey</p>
+                <form id="authForm">
+                    <input type="email" class="auth-input" id="authEmail" placeholder="Email address" required>
+                    <input type="password" class="auth-input" id="authPassword" placeholder="Password" required>
+                    <div class="forgot-password">
+                        <a onclick="showForgotPassword()">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="auth-btn">Sign In</button>
+                </form>
+                <div class="auth-divider">or</div>
+                <button class="auth-btn-secondary" onclick="toggleAuth()">
+                    <i class="fas fa-user-plus"></i> Create New Account
+                </button>
+                <div class="auth-switch" onclick="toggleAuth()">
+                    Don't have an account? <span>Sign up</span>
+                </div>
+            </div>
+            <div id="forgotPasswordForm" style="display:none;">
+                <h2>Reset Password</h2>
+                <p>Enter your email to receive a password reset OTP</p>
+                <form id="forgotPasswordFormElement">
+                    <input type="email" class="auth-input" id="resetEmail" placeholder="Email address" required>
+                    <button type="submit" class="auth-btn">Send OTP</button>
+                </form>
+                <div class="auth-divider">or</div>
+                <button class="auth-btn-secondary" onclick="showLogin()">
+                    <i class="fas fa-arrow-left"></i> Back to Sign In
+                </button>
+            </div>
+            <div id="otpForm" style="display:none;">
+                <h2>Verify OTP</h2>
+                <p>Enter the 6-digit code sent to your email</p>
+                <div class="otp-group">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this)" onkeydown="otpKeydown(event, this)">
+                </div>
+                <button class="auth-btn" onclick="verifyOTP()">Verify OTP</button>
+                <div style="text-align:center;margin-top:1rem;">
+                    <a style="color:var(--text-secondary);cursor:pointer;font-size:0.85rem;" onclick="showForgotPassword()">Resend OTP</a>
+                </div>
+            </div>
+            <div id="resetPasswordForm" style="display:none;">
+                <h2>Set New Password</h2>
+                <p>Create a new password for your account</p>
+                <form id="resetPasswordFormElement">
+                    <input type="password" class="auth-input" id="newPassword" placeholder="New password" required oninput="checkPasswordStrength(this.value)">
+                    <div class="password-strength"><div class="strength-bar" id="resetStrengthBar"></div></div>
+                    <div class="password-hint">Must be at least 8 characters with uppercase, lowercase, and number</div>
+                    <input type="password" class="auth-input" id="confirmPassword" placeholder="Confirm password" required>
+                    <button type="submit" class="auth-btn">Reset Password</button>
+                </form>
+            </div>
+            <div id="successMessage" style="display:none;">
+                <div class="success-icon">✅</div>
+                <h2 style="text-align:center;">Success!</h2>
+                <p style="text-align:center;color:var(--text-secondary);" id="successText">Your password has been reset successfully.</p>
+                <button class="auth-btn" onclick="showLogin()">Sign In Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="scrollToSection('home')">
+                <div class="logo-icon">🧘</div>
+                <span>
+                    Yoga Diet
+                    <span class="logo-sub">with Manasi</span>
+                </span>
+            </div>
+            <ul class="nav-menu">
+                <li><a onclick="scrollToSection('home')">Home</a></li>
+                <li><a onclick="scrollToSection('features')">Features</a></li>
+                <li><a onclick="scrollToSection('assessment')">Assess</a></li>
+                <li><a onclick="scrollToSection('dashboard')">Dashboard</a></li>
+                <li><a onclick="scrollToSection('charts')">Charts</a></li>
+                <li><a onclick="scrollToSection('journal')">Journal</a></li>
+                <li><a onclick="scrollToSection('achievements')">🏆</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </li>
+                <li><a onclick="openAuth()" class="nav-cta" id="authBtn">
+                    <i class="fas fa-user"></i> Sign In
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <!-- ===== AI-POWERED BADGE - CLICKABLE ===== -->
+                <div class="hero-badge" onclick="openAIPopup()" title="Click to learn about AI-Powered Wellness">
+                    <i class="fas fa-circle"></i>
+                    AI-Powered Wellness
+                    <i class="fas fa-chevron-right" style="font-size:0.7rem;margin-left:4px;"></i>
+                </div>
+                <h1>
+                    <span class="brand-name">Yoga Diet</span><br>
+                    <span class="highlight-3">with Manasi</span>
+                </h1>
+                <p>
+                    Personalized yoga routines, diet plans, and wellness tools 
+                    tailored to your unique goals and preferences.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="scrollToSection('assessment')">
+                        <i class="fas fa-sparkles"></i> Start Journey
+                    </button>
+                    <button class="btn-secondary" onclick="openAuth()">
+                        <i class="fas fa-user-plus"></i> Join Community
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Yoga Poses</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Diet Plans</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Happy Users</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <div class="hero-circle"></div>
+                    <div class="floating-icon">🧘</div>
+                    <div class="floating-icon">🌿</div>
+                    <div class="floating-icon">✨</div>
+                    <div class="floating-icon">🌸</div>
+                    <div class="hero-emoji-large">🧘‍♀️</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-star"></i> Platform Features</div>
+            <h2>Everything You <span style="color:#8B5CF6;">Need</span></h2>
+            <p>All-in-one wellness platform to transform your life</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" onclick="handleFeatureClick('yoga')">
+                <div class="feature-icon">🧘</div>
+                <h3>Personalized Yoga</h3>
+                <p>Custom routines based on your goals and experience level</p>
+            </div>
+            <div class="feature-card" onclick="handleFeatureClick('diet')">
+                <div class="feature-icon">🥗</div>
+                <h3>Smart Diet Plans</h3>
+                <p>Meal plans tailored to your dietary preferences and goals</p>
+            </div>
+            <div class="feature-card" onclick="handleFeatureClick('dashboard')">
+                <div class="feature-icon">📊</div>
+                <h3>Progress Dashboard</h3>
+                <p>Track your BMI, weight, and wellness journey visually</p>
+            </div>
+            <div class="feature-card" onclick="handleFeatureClick('charts')">
+                <div class="feature-icon">📈</div>
+                <h3>Analytics & Charts</h3>
+                <p>Visual insights into your health and progress trends</p>
+            </div>
+            <div class="feature-card" onclick="handleFeatureClick('journal')">
+                <div class="feature-icon">📝</div>
+                <h3>Daily Journal</h3>
+                <p>Log your mood, meals, and daily reflections</p>
+            </div>
+            <div class="feature-card" onclick="handleFeatureClick('achievements')">
+                <div class="feature-icon">🏆</div>
+                <h3>Achievements</h3>
+                <p>Earn badges and track your wellness milestones</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ASSESSMENT ===== -->
+    <section class="assessment" id="assessment">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-leaf"></i> Personalize Your Plan</div>
+            <h2>Tell Us About <span style="color:#8B5CF6;">Yourself</span></h2>
+            <p>Fill in the details below and we'll create your custom wellness roadmap</p>
+        </div>
+        <form class="glass-form" id="userForm">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label><i class="fas fa-user"></i> What's your name?</label>
+                    <input type="text" id="name" placeholder="e.g., Manasi Mhaskar" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-alt"></i> Age</label>
+                    <input type="number" id="age" placeholder="25" required min="1" max="120">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-weight"></i> Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="50" step="0.1" required min="20" max="300">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-ruler-vertical"></i> Height (m)</label>
+                    <input type="number" id="height" placeholder="1.47" step="0.01" required min="0.5" max="2.5">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-bullseye"></i> Primary Goal</label>
+                    <select id="goal" required>
+                        <option value="">Select your goal</option>
+                        <option value="weight_loss">🏋️ Weight Loss</option>
+                        <option value="muscle_gain">💪 Muscle Gain</option>
+                        <option value="flexibility">🧘 Flexibility</option>
+                        <option value="stress_relief">😌 Stress Relief</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-level-up-alt"></i> Experience Level</label>
+                    <select id="experience" required>
+                        <option value="">Select experience</option>
+                        <option value="beginner">🌱 Beginner</option>
+                        <option value="intermediate">🌿 Intermediate</option>
+                        <option value="advanced">🌳 Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-utensils"></i> Dietary Preference</label>
+                    <select id="diet" required>
+                        <option value="">Select preference</option>
+                        <option value="vegetarian">🥗 Vegetarian</option>
+                        <option value="vegan">🌱 Vegan</option>
+                        <option value="non-vegetarian">🍗 Non-Vegetarian</option>
+                        <option value="keto">🥑 Keto</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-spa"></i> Generate My Personalized Plan <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="dashboard" id="dashboard">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-chart-line"></i> Your Progress</div>
+            <h2>Wellness <span style="color:#F472B6;">Dashboard</span></h2>
+            <p>Track your health metrics and wellness journey</p>
+        </div>
+        <div class="dashboard-grid" id="dashboardGrid">
+            <div class="dashboard-card" data-field="weight">
+                <div class="card-actions">
+                    <button class="edit-btn" onclick="openEditModal('weight')" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="delete-btn" onclick="deleteData('weight')" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="card-header"><h4>Current Weight</h4><i class="fas fa-weight" style="color:#8B5CF6;"></i></div>
+                <div class="card-value" id="dashWeight">-- kg</div>
+                <div class="card-change" id="dashWeightChange">Complete your assessment</div>
+            </div>
+            <div class="dashboard-card" data-field="bmi">
+                <div class="card-actions">
+                    <button class="edit-btn" onclick="openEditModal('bmi')" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="delete-btn" onclick="deleteData('bmi')" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="card-header"><h4>BMI</h4><i class="fas fa-chart-pie" style="color:#34D399;"></i></div>
+                <div class="card-value" id="dashBMI">--</div>
+                <div class="card-change" id="dashBMICategory">Not calculated</div>
+            </div>
+            <div class="dashboard-card" data-field="calories">
+                <div class="card-actions">
+                    <button class="edit-btn" onclick="openEditModal('calories')" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="delete-btn" onclick="deleteData('calories')" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="card-header"><h4>Daily Calories</h4><i class="fas fa-fire" style="color:#F472B6;"></i></div>
+                <div class="card-value" id="dashCalories">-- kcal</div>
+                <div class="card-change">Recommended intake</div>
+            </div>
+            <div class="dashboard-card" data-field="streak">
+                <div class="card-actions">
+                    <button class="delete-btn" onclick="deleteData('streak')" title="Reset Streak"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="card-header"><h4>Streak</h4><i class="fas fa-fire" style="color:#FB923C;"></i></div>
+                <div class="card-value" id="dashStreak">0 days</div>
+                <div class="card-change positive">Keep it going! 🔥</div>
+            </div>
+        </div>
+        <div class="progress-circle-container">
+            <div>
+                <div class="progress-circle">
+                    <svg viewBox="0 0 120 120">
+                        <circle class="bg" cx="60" cy="60" r="50"/>
+                        <circle class="progress" cx="60" cy="60" r="50" stroke-dasharray="0, 314" id="progressCircle"/>
+                    </svg>
+                    <div class="center-text" id="weeklyProgress">0%</div>
+                </div>
+                <div class="progress-label">Weekly Goal Progress</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CHARTS ===== -->
+    <section class="charts-section" id="charts">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-chart-bar"></i> Analytics</div>
+            <h2>Your <span style="color:#8B5CF6;">Progress</span> Charts</h2>
+            <p>Visual insights into your health journey</p>
+        </div>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>📊 Weekly Weight Trend</h3>
+                <div class="chart-bar-container" id="weightChart"></div>
+            </div>
+            <div class="chart-card">
+                <h3>📈 BMI Trend</h3>
+                <div class="chart-bar-container" id="bmiChart"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== JOURNAL ===== -->
+    <section class="journal-section" id="journal">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-book"></i> Daily Reflection</div>
+            <h2>Your <span style="color:#F472B6;">Journal</span></h2>
+            <p>Capture your thoughts, moods, and daily experiences</p>
+        </div>
+        <div class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date" id="journalDate">Today</span>
+                <span class="entry-mood" id="selectedMood">😊</span>
+            </div>
+            <div class="mood-selector">
+                <button class="mood-btn active" data-mood="😊" onclick="selectMood('😊')">😊</button>
+                <button class="mood-btn" data-mood="😌" onclick="selectMood('😌')">😌</button>
+                <button class="mood-btn" data-mood="😐" onclick="selectMood('😐')">😐</button>
+                <button class="mood-btn" data-mood="😰" onclick="selectMood('😰')">😰</button>
+                <button class="mood-btn" data-mood="😴" onclick="selectMood('😴')">😴</button>
+                <button class="mood-btn" data-mood="🤗" onclick="selectMood('🤗')">🤗</button>
+            </div>
+            <textarea id="journalEntry" placeholder="How was your day? What did you eat? How are you feeling?"></textarea>
+            <button class="btn-primary" style="width:100%;justify-content:center;margin-top:1rem;" onclick="saveJournal()">
+                <i class="fas fa-save"></i> Save Entry
+            </button>
+        </div>
+        <div class="journal-entries-list" id="journalEntries"></div>
+    </section>
+
+    <!-- ===== REMINDERS ===== -->
+    <section class="reminder-section" id="reminders">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-bell"></i> Stay on Track</div>
+            <h2>Smart <span style="color:#8B5CF6;">Reminders</span></h2>
+            <p>Enable notifications to stay consistent with your wellness routine</p>
+        </div>
+        <div id="reminderList">
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(139,92,246,0.2);">🧘</div>
+                    <span>Morning Yoga Session</span>
+                    <span class="reminder-time">7:00 AM</span>
+                </div>
+                <div class="toggle-reminder active" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(52,211,153,0.2);">🥗</div>
+                    <span>Breakfast Time</span>
+                    <span class="reminder-time">8:00 AM</span>
+                </div>
+                <div class="toggle-reminder active" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(96,165,250,0.2);">💧</div>
+                    <span>Drink Water</span>
+                    <span class="reminder-time">10:30 AM</span>
+                </div>
+                <div class="toggle-reminder" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(52,211,153,0.2);">🍽️</div>
+                    <span>Lunch Time</span>
+                    <span class="reminder-time">1:00 PM</span>
+                </div>
+                <div class="toggle-reminder active" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(244,114,182,0.2);">🧘</div>
+                    <span>Evening Meditation</span>
+                    <span class="reminder-time">6:00 PM</span>
+                </div>
+                <div class="toggle-reminder" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <div class="reminder-icon" style="background:rgba(52,211,153,0.2);">🍽️</div>
+                    <span>Dinner Time</span>
+                    <span class="reminder-time">8:00 PM</span>
+                </div>
+                <div class="toggle-reminder active" onclick="toggleReminder(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ACHIEVEMENTS ===== -->
+    <section class="achievements-section" id="achievements">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-trophy"></i> Your Achievements</div>
+            <h2>🏆 Badges & <span style="color:#F472B6;">Milestones</span></h2>
+            <p>Earn badges as you progress on your wellness journey</p>
+        </div>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+    </section>
+
+    <!-- ===== RESULTS ===== -->
+    <section class="results" id="results">
+        <div class="section-header">
+            <div class="badge"><i class="fas fa-check-circle"></i> Your Custom Plan</div>
+            <h2>Your <span style="color:#F472B6;">Wellness</span> Roadmap</h2>
+        </div>
+        <div id="results-container"></div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p><span class="manasi">Yoga Diet with Manasi</span></p>
+        <p style="font-size:0.8rem;margin-top:0.5rem;">🌟 Empowering holistic wellness • Transform your mind, body, and soul</p>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script src="js/app.js"></script>
+</body>
+</html>
